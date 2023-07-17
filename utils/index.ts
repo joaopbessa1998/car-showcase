@@ -1,21 +1,4 @@
-// const fetch = require('node-fetch');
-
-// const url = 'https://cars-by-api-ninjas.p.rapidapi.com/v1/cars?model=corolla';
-// const options = {
-//     method: 'GET',
-//     headers: {
-//         'X-RapidAPI-Key': '65b350e923msh3e2efd5e2eca14ep1253d2jsnc01428406560',
-//         'X-RapidAPI-Host': 'cars-by-api-ninjas.p.rapidapi.com'
-//     }
-// };
-
-// try {
-//     const response = await fetch(url, options);
-//     const result = await response.text();
-//     console.log(result);
-// } catch (error) {
-//     console.error(error);
-// }
+import { CarProps } from "@/types";
 
 export async function fetchCars() {
     const headers = {
@@ -61,3 +44,20 @@ export const updateSearchParams = (type: string, value: string) => {
 
     return newPathname;
 };
+
+
+export const generateCarImageUrl = (car: CarProps, angle?: string) => {
+    const url = new URL('https://cdn.imagin.studio/getimage');
+
+    const { make, year, model } = car;
+
+    url.searchParams.append('customer', 'hrjavascript-mastery');
+    url.searchParams.append('make', make);
+    url.searchParams.append('modelFamily', model.split(" ")[0]);
+    url.searchParams.append('zoomType', 'fullscreen');
+    url.searchParams.append('modelYear', `${year}`);
+    // url.searchParams.append('zoomLevel', zoomLevel);
+    url.searchParams.append('angle', `${angle}`);
+
+    return `${url}`;
+}
